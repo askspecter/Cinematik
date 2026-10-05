@@ -2,7 +2,7 @@
   "use strict";
 
   /* ------------------------------------------------------------------
-   * Copy (EN / ID)
+   * Copy (EN / 中文)
    * ------------------------------------------------------------------ */
   const COPY = {
     en: {
@@ -23,23 +23,23 @@
       ctaWords: ["NOW!", "HERE!", "WITH YOU!"],
       ctaLink: "Join the crew",
     },
-    id: {
-      intro1: "Jauh melewati kota terakhir yang bercahaya, sebuah komet kecil bernama Lumi terus melayang.<br>Mencari langit tempat cahaya dibagi, bukan disimpan sendiri.",
-      intro2: "Suatu malam, bintang-bintang mulai melengkung.<br>Sebuah pintu muncul di dalam gelap.",
-      intro3: "Siap mengikuti<br>ke mana Lumi pergi?",
+    zh: {
+      intro1: "在最后一座亮着灯的城市之外，一颗名叫 Lumi 的小彗星仍在漂流。<br>它在寻找一片光被分享、而不是被囤积的天空。",
+      intro2: "某天夜里，星星开始弯曲。<br>黑暗中出现了一扇门。",
+      intro3: "准备好跟着<br>Lumi 出发了吗？",
       subs: {
-        2: "Bintang-bintang memanjang menjadi garis. Lumi belum pernah melaju secepat ini.",
-        3: "Di tengahnya, sebuah cincin cahaya — berputar, menunggu, terbuka.",
-        4: "Di sisi lain: warna-warna yang belum pernah ditangkap teleskop mana pun.",
+        2: "星光被拉成一道道线。Lumi 从未飞得这么快。",
+        3: "在正中央，一圈光环——旋转着、等待着、敞开着。",
+        4: "另一边：任何望远镜都未曾捕捉过的色彩。",
       },
       manifesto: [
-        ["Setiap kisah dimulai dari kecil.", "Satu percikan di gelap yang luas."],
-        ["Cahaya melaju lebih jauh bersama.", "Setiap bingkai adalah langkah maju.", "Setiap penonton menjadi pemandu."],
-        ["Kami bangun panggungnya dulu,", "lalu mengundang dunia masuk.", "Tak ada penonton — semua kru."],
+        ["每个故事都从微小开始。", "广阔黑暗中的一点火花。"],
+        ["光，一起走得更远。", "每一帧都是向前一步。", "每位观众都成为向导。"],
+        ["我们先搭好舞台，", "再邀请世界走进来。", "没有旁观者——只有同伴。"],
       ],
-      ctaHead: "Perjalanan dimulai",
-      ctaWords: ["SEKARANG!", "DI SINI!", "BERSAMAMU!"],
-      ctaLink: "Gabung kru",
+      ctaHead: "旅程开始于",
+      ctaWords: ["现在！", "这里！", "你！"],
+      ctaLink: "加入我们",
     },
   };
 
@@ -209,10 +209,10 @@
   const smooth = (e0, e1, x) => { const t = clamp01((x - e0) / (e1 - e0)); return t * t * (3 - 2 * t); };
 
   const palette = [
-    [255, 181, 71],   // amber
-    [255, 94, 126],   // rose
-    [106, 215, 255],  // sky
-    [170, 120, 255],  // violet
+    [219, 255, 119],  // lime
+    [121, 202, 28],   // green
+    [22, 141, 82],    // emerald
+    [183, 245, 22],   // chartreuse
   ];
   const pick = (h) => palette[Math.floor(h * palette.length) % palette.length];
 
@@ -220,8 +220,8 @@
     // Deep space -> nebula world after the portal
     const other = smooth(3.4, 4.2, p);
     const g = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) * 0.8);
-    g.addColorStop(0, `rgb(${lerp(10, 48, other)}, ${lerp(14, 18, other)}, ${lerp(28, 60, other)})`);
-    g.addColorStop(1, `rgb(${lerp(5, 12, other)}, ${lerp(7, 6, other)}, ${lerp(13, 24, other)})`);
+    g.addColorStop(0, `rgb(${lerp(4, 6, other)}, ${lerp(26, 77, other)}, ${lerp(16, 43, other)})`);
+    g.addColorStop(1, `rgb(${lerp(1, 2, other)}, ${lerp(8, 20, other)}, ${lerp(5, 11, other)})`);
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
 
@@ -291,14 +291,14 @@
 
     const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, base);
     glow.addColorStop(0, `rgba(255,240,220,${0.55 * alpha})`);
-    glow.addColorStop(0.6, `rgba(255,94,126,${0.12 * alpha})`);
+    glow.addColorStop(0.6, `rgba(121,202,28,${0.18 * alpha})`);
     glow.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = glow;
     ctx.beginPath(); ctx.arc(cx, cy, base, 0, Math.PI * 2); ctx.fill();
 
     // White flash at the threshold
     const flash = Math.max(0, 1 - Math.abs(p - 3.45) / 0.18);
-    if (flash > 0) { ctx.fillStyle = `rgba(255,248,235,${flash * 0.85})`; ctx.fillRect(0, 0, W, H); }
+    if (flash > 0) { ctx.fillStyle = `rgba(240,255,210,${flash * 0.85})`; ctx.fillRect(0, 0, W, H); }
   }
 
   function drawMotes(p, t) {
@@ -357,22 +357,22 @@
     // Tail
     for (let i = 0; i < trail.length; i++) {
       const tp = trail[i], k = i / trail.length;
-      ctx.fillStyle = `rgba(255,181,71,${0.18 * k * alpha})`;
+      ctx.fillStyle = `rgba(183,245,22,${0.18 * k * alpha})`;
       ctx.beginPath(); ctx.arc(tp.x, tp.y, 26 * size * k, 0, Math.PI * 2); ctx.fill();
     }
 
     // Halo
     const halo = ctx.createRadialGradient(x, y, 0, x, y, 90 * size);
-    halo.addColorStop(0, `rgba(255,220,160,${0.6 * alpha})`);
-    halo.addColorStop(1, "rgba(255,120,80,0)");
+    halo.addColorStop(0, `rgba(219,255,119,${0.55 * alpha})`);
+    halo.addColorStop(1, "rgba(22,141,82,0)");
     ctx.fillStyle = halo;
     ctx.beginPath(); ctx.arc(x, y, 90 * size, 0, Math.PI * 2); ctx.fill();
 
     // Body
     const r = 30 * size;
     const body = ctx.createRadialGradient(x - r * 0.3, y - r * 0.35, r * 0.1, x, y, r);
-    body.addColorStop(0, `rgba(255,250,235,${alpha})`);
-    body.addColorStop(1, `rgba(255,160,70,${alpha})`);
+    body.addColorStop(0, `rgba(250,255,235,${alpha})`);
+    body.addColorStop(1, `rgba(121,202,28,${alpha})`);
     ctx.fillStyle = body;
     ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
 
@@ -398,8 +398,8 @@
     const f = smooth(5.0, 5.8, p);
     if (f <= 0) return;
     const g = ctx.createLinearGradient(0, H, 0, 0);
-    g.addColorStop(0, `rgba(255,94,126,${0.25 * f})`);
-    g.addColorStop(0.5, `rgba(255,181,71,${0.08 * f})`);
+    g.addColorStop(0, `rgba(22,141,82,${0.35 * f})`);
+    g.addColorStop(0.5, `rgba(219,255,119,${0.08 * f})`);
     g.addColorStop(1, "rgba(0,0,0,0)");
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);

@@ -1,10 +1,10 @@
 :root {
-  --bg: #05070d;
-  --fg: #f4f1ea;
-  --muted: rgba(244, 241, 234, 0.55);
-  --accent: #ffb547;
-  --accent-2: #ff5e7e;
-  --accent-3: #6ad7ff;
+  --bg: #02140b;
+  --fg: #ffffff;
+  --muted: rgba(255, 255, 255, 0.55);
+  --accent: #dbff77;
+  --accent-2: #79ca1c;
+  --accent-3: #168d52;
   --display: "Bebas Neue", sans-serif;
   --ui: "Jura", sans-serif;
   --body: "Noto Sans", sans-serif;
@@ -39,6 +39,7 @@ a { color: inherit; text-decoration: none; }
 .loading-logo span { font-family: var(--display); font-size: 28px; letter-spacing: 0.35em; padding-left: 0.35em; }
 .logo-ring { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 260 70; transform-origin: center; animation: spin 2s linear infinite; }
 .logo-core { fill: var(--accent-2); }
+.cta-link:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
 .loading-bar { width: min(220px, 60vw); height: 1px; background: rgba(255,255,255,0.15); }
 .loading-bar-fill { height: 100%; width: 0; background: var(--fg); transition: width 0.2s; }
 
@@ -78,11 +79,12 @@ a { color: inherit; text-decoration: none; }
 .scroll-btn { font-family: var(--ui); font-size: 11px; letter-spacing: 0.25em; padding-left: 0.25em; position: relative; z-index: 1; }
 .scroll-circle { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--fg); animation: spin 2.6s linear infinite; }
 .scroll::before {
-  content: ""; position: absolute; inset: 14px; border-radius: 50%;
-  background: rgba(255,255,255,0.06); transform: scale(0.6); opacity: 0;
-  transition: transform 0.4s, opacity 0.4s;
+  content: ""; position: absolute; inset: 2px; border-radius: 50%;
+  background: var(--accent); transform: scale(0); transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.1, 1);
 }
-.scroll:hover::before { transform: scale(1); opacity: 1; }
+.scroll:hover::before { transform: scale(1); }
+.scroll:hover .scroll-btn { color: var(--bg); }
+.scroll-btn { transition: color 0.4s; }
 
 /* ---------- Subtitles ---------- */
 .subtitles {
@@ -114,9 +116,14 @@ a { color: inherit; text-decoration: none; }
 .manifesto-line span {
   display: inline-block; position: relative;
   font-family: var(--display); font-size: clamp(26px, 4.2vw, 58px); letter-spacing: 0.03em; line-height: 1.1;
-  transform: translateY(105%); transition: transform 1s cubic-bezier(0.2, 0.7, 0.1, 1);
+  padding: 0 10px; transform: translateY(105%); transition: transform 1s cubic-bezier(0.2, 0.7, 0.1, 1);
+}
+.manifesto-line span::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(0, 0, 0, 0.4);
+  transform-origin: top; transform: scaleY(0); transition: transform 1.5s;
 }
 .manifesto-line.is-visible span { transform: none; }
+.manifesto-line.is-visible span::before { transform: scaleY(1); }
 .manifesto-line:nth-child(even) span { color: var(--accent); }
 
 /* ---------- Section 6: CTA ---------- */
